@@ -9,12 +9,16 @@
 name: Docker Publish
 
 on:
- push:
-   branch: ['master']
+  push:
+    branches:
+      - master
 
 env:
   IMAGE_NAME: "buyfakett/openresty"
   IMAGE_TAG: "ubuntu_focal-vts_0.2.2"
+  ALIYUN_REGISTRY: "${{ secrets.ALIYUN_REGISTRY }}"
+  ALIYUN_REGISTRY_USER: "${{ secrets.ALIYUN_REGISTRY_USER }}"
+  ALIYUN_REGISTRY_PASSWORD: "${{ secrets.ALIYUN_REGISTRY_PASSWORD }}"
 
 jobs:
   docker:
@@ -48,10 +52,9 @@ jobs:
           context: .
           platforms: linux/amd64
           push: true
-          tags: ${{ env.IMAGE_NAME }}:${{ env.IMAGE_TAG }}
+          tags: ${{ env.IMAGE_NAME }}:${{ env.IMAGE_TAG }},${{ env.ALIYUN_REGISTRY }}/${{ env.IMAGE_NAME }}:${{ env.IMAGE_TAG }}
       
       - name: Push Aliyun Docker Image
         run: |
-          docker login -u ${{ secrets.ALIYUN_REGISTRY_USER }} -p ${{ secrets.ALIYUN_REGISTRY_PASSWORD }} ${{ secrets.ALIYUN_REGISTRY }}
-          docker tag ${IMAGE_NAME}:${IMAGE_TAG} ${{ secrets.ALIYUN_REGISTRY }}/${IMAGE_NAME}:${IMAGE_TAG}
-          docker push ${{ secrets.ALIYUN_REGISTRY }}/${IMAGE_NAME}:${IMAGE_TAG}
+          docker login -u ${ALIYUN_REGISTRY_USER} -p ${ALIYUN_REGISTRY_PASSWORD} ${ALIYUN_REGISTRY}
+          docker push ${ALIYUN_REGISTRY}/${IMAGE_NAME}:${IMAGE_TAG}
