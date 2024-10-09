@@ -19,7 +19,7 @@ ARG RESTY_OPENSSL_URL_BASE="https://www.openssl.org/source/old/1.1.1"
 ARG RESTY_PCRE_VERSION="8.45"
 ARG RESTY_PCRE_BUILD_OPTIONS="--enable-jit"
 ARG RESTY_PCRE_SHA256="4e6ce03e0336e8b4a3d6c2b70b1c5e18590a5673a98186da90d4f33c23defc09"
-ARG RESTY_J="1"
+ARG RESTY_J="2"
 ARG RESTY_CONFIG_OPTIONS="\
     --with-compat \
     --with-file-aio \
