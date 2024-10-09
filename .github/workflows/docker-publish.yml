@@ -12,6 +12,10 @@ on:
  push:
    branch: ['master']
 
+env:
+  IMAGE_NAME: "buyfakett/openresty"
+  IMAGE_TAG: "ubuntu_focal-vts_0.2.2"
+
 jobs:
   docker:
     runs-on: ubuntu-latest
@@ -22,7 +26,7 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v2
 
-      - name: download vts-0.2.2
+      - name: Download vts-0.2.2
         run: |
           chmod +x build.sh && ./build.sh
 
@@ -30,7 +34,7 @@ jobs:
         id: meta
         uses: docker/metadata-action@v4
         with:
-            images: buyfakett/openresty
+            images: ${IMAGE_NAME}
 
       - name: Login to Docker Hub
         uses: docker/login-action@v2
@@ -44,4 +48,9 @@ jobs:
           context: .
           platforms: linux/amd64
           push: true
-          tags: buyfakett/openresty:ubuntu_focal-vts_0.2.2
+          tags: ${IMAGE_NAME}:${IMAGE_TAG}
+      
+      - name: Push Aliyun Docker Image
+        run: |
+          docker login -u ${{ secrets.ALIYUN_REGISTRY_USER }} -p ${{ secrets.ALIYUN_REGISTRY_PASSWORD }} ${{ secrets.ALIYUN_REGISTRY }}
+          docker push ${IMAGE_NAME}:${IMAGE_TAG}
