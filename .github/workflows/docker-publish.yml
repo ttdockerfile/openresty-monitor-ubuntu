@@ -53,4 +53,5 @@ jobs:
       - name: Push Aliyun Docker Image
         run: |
           docker login -u ${{ secrets.ALIYUN_REGISTRY_USER }} -p ${{ secrets.ALIYUN_REGISTRY_PASSWORD }} ${{ secrets.ALIYUN_REGISTRY }}
-          docker push ${IMAGE_NAME}:${IMAGE_TAG}
+          docker tag ${IMAGE_NAME}:${IMAGE_TAG} ${{ secrets.ALIYUN_REGISTRY }}/${IMAGE_NAME}:${IMAGE_TAG}
+          docker push ${{ secrets.ALIYUN_REGISTRY }}/${IMAGE_NAME}:${IMAGE_TAG}
