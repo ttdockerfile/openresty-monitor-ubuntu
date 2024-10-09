@@ -34,7 +34,7 @@ jobs:
         id: meta
         uses: docker/metadata-action@v4
         with:
-            images: ${IMAGE_NAME}
+            images: $IMAGE_NAME
 
       - name: Login to Docker Hub
         uses: docker/login-action@v2
@@ -48,10 +48,10 @@ jobs:
           context: .
           platforms: linux/amd64
           push: true
-          tags: ${IMAGE_NAME}:${IMAGE_TAG}
+          tags: $IMAGE_NAME:$IMAGE_TAG
       
       - name: Push Aliyun Docker Image
         run: |
           docker login -u ${{ secrets.ALIYUN_REGISTRY_USER }} -p ${{ secrets.ALIYUN_REGISTRY_PASSWORD }} ${{ secrets.ALIYUN_REGISTRY }}
-          docker tag ${IMAGE_NAME}:${IMAGE_TAG} ${{ secrets.ALIYUN_REGISTRY }}/${IMAGE_NAME}:${IMAGE_TAG}
-          docker push ${{ secrets.ALIYUN_REGISTRY }}/${IMAGE_NAME}:${IMAGE_TAG}
+          docker tag ${IMAGE_NAME}:${IMAGE_TAG} ${{ secrets.ALIYUN_REGISTRY }}/$IMAGE_NAME:$IMAGE_TAG
+          docker push ${{ secrets.ALIYUN_REGISTRY }}/$IMAGE_NAME:$IMAGE_TAG
