@@ -16,6 +16,9 @@ on:
 env:
   IMAGE_NAME: "buyfakett/openresty"
   IMAGE_TAG: "ubuntu_focal-vts_0.2.2"
+  ALIYUN_REGISTRY: "${{ secrets.ALIYUN_REGISTRY }}"
+  ALIYUN_REGISTRY_USER: "${{ secrets.ALIYUN_REGISTRY_USER }}"
+  ALIYUN_REGISTRY_PASSWORD: "${{ secrets.ALIYUN_REGISTRY_PASSWORD }}"
 
 jobs:
   docker:
