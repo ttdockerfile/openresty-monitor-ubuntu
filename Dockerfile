@@ -19,7 +19,7 @@ ARG RESTY_OPENSSL_URL_BASE="https://www.openssl.org/source/old/1.1.1"
 ARG RESTY_PCRE_VERSION="8.45"
 ARG RESTY_PCRE_BUILD_OPTIONS="--enable-jit"
 ARG RESTY_PCRE_SHA256="4e6ce03e0336e8b4a3d6c2b70b1c5e18590a5673a98186da90d4f33c23defc09"
-ARG RESTY_J="2"
+ARG RESTY_J="1"
 ARG RESTY_CONFIG_OPTIONS="\
     --with-compat \
     --with-file-aio \
@@ -51,6 +51,7 @@ ARG RESTY_CONFIG_OPTIONS="\
     --with-stream_ssl_module \
     --with-threads \
     --add-module=/usr/local/src/nginx-module-vts-0.2.2 \
+    --add-module=/usr/local/src/ngx_waf-10.1.2 \
     "
 ARG RESTY_CONFIG_OPTIONS_MORE=""
 ARG RESTY_LUAJIT_OPTIONS="--with-luajit-xcflags='-DLUAJIT_NUMMODE=2 -DLUAJIT_ENABLE_LUA52COMPAT'"
@@ -90,6 +91,7 @@ LABEL resty_luajit_options="${RESTY_LUAJIT_OPTIONS}"
 LABEL resty_pcre_options="${RESTY_PCRE_OPTIONS}"
 
 COPY nginx-module-vts-0.2.2 /usr/local/src/nginx-module-vts-0.2.2
+COPY ngx_waf-10.1.2 /usr/local/src/ngx_waf-10.1.2
 
 RUN apt-get update \
     && apt-get install -y --no-install-recommends wget gnupg2 ca-certificates \
@@ -100,7 +102,7 @@ RUN apt-get update \
 
 RUN opm get knyar/nginx-lua-prometheus=0.20230607
 
-
+ENV LIB_UTHASH=/usr/local/src/uthash
 
 
 RUN DEBIAN_FRONTEND=noninteractive apt-get update \
@@ -120,8 +122,38 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get update \
         unzip \
         wget \
         zlib1g-dev \
+        flex \
+        bison \
+        git \
+        autoconf \
+        automake \
+        libtool \
+        python3 \
+        libsodium-dev \
+        libsodium23 \ 
+        libmodsecurity3 \
+        libmodsecurity-dev \
+        libcurl4-openssl-dev \
         ${RESTY_ADD_PACKAGE_BUILDDEPS} \
         ${RESTY_ADD_PACKAGE_RUNDEPS} \
+    && cd /usr/local/src/ngx_waf-10.1.2 \
+    && git clone -b v1.7.15 https://github.com/DaveGamble/cJSON.git lib/cjson \
+    && git clone -b v2.3.0 https://github.com/troydhanson/uthash.git lib/uthash \
+    && cd /usr/local/src \
+    && git clone https://github.com/troydhanson/uthash.git \
+    && . /etc/environment \
+    && mkdir -p /usr/local/src \
+    && cd /usr/local/src \
+    && git clone https://github.com/libinjection/libinjection.git \
+    && cd libinjection \
+    && ./autogen.sh \
+    && ./configure --prefix=/usr/local/libinjection \
+    && make -j${RESTY_J} \
+    && make install \
+    && export PKG_CONFIG_PATH=/usr/local/libinjection/lib/pkgconfig:$PKG_CONFIG_PATH \
+    && export LIB_INJECTION=/usr/local/libinjection \
+    && export LD_LIBRARY_PATH=/usr/local/libinjection/lib:$LD_LIBRARY_PATH \
+    && export C_INCLUDE_PATH=/usr/local/libinjection/include:$C_INCLUDE_PATH \
     && cd /tmp \
     && if [ -n "${RESTY_EVAL_PRE_CONFIGURE}" ]; then eval $(echo ${RESTY_EVAL_PRE_CONFIGURE}); fi \
     && curl -fSL "${RESTY_OPENSSL_URL_BASE}/openssl-${RESTY_OPENSSL_VERSION}.tar.gz" -o openssl-${RESTY_OPENSSL_VERSION}.tar.gz \
@@ -186,7 +218,13 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get update \
     && DEBIAN_FRONTEND=noninteractive apt-get autoremove -y \
     && mkdir -p /var/run/openresty \
     && ln -sf /dev/stdout /usr/local/openresty/nginx/logs/access.log \
-    && ln -sf /dev/stderr /usr/local/openresty/nginx/logs/error.log
+    && ln -sf /dev/stderr /usr/local/openresty/nginx/logs/error.log \
+    && rm -rf /tmp/* \
+    && rm -rf /var/lib/apt/lists/* \
+    && rm -rf /var/log/* \
+    && apt-get clean \
+    && find / -type d -name ".git" -exec rm -rf {} +
+
 
 # Add additional binaries into PATH for convenience
 ENV PATH=$PATH:/usr/local/openresty/luajit/bin:/usr/local/openresty/nginx/sbin:/usr/local/openresty/bin

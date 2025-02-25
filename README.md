@@ -1,4 +1,4 @@
-本仓库把[vts-0.2.2]()和`nginx-lua-prometheus`打进`openresty`镜像中
+本仓库把[vts-0.2.2]()和`nginx-lua-prometheus`和[ngx_waf](https://github.com/ADD-SP/ngx_waf)打进`openresty`镜像中
 
 ## 使用方法：
 
