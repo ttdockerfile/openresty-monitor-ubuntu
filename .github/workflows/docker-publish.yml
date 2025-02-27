@@ -27,9 +27,9 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v2
 
-      - name: Download vts-0.2.2
+      - name: Download
         run: |
-          chmod +x build.sh && ./build.sh
+          make download
 
       - name: Docker meta
         id: meta

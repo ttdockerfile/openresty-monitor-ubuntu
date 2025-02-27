@@ -50,7 +50,7 @@ ARG RESTY_CONFIG_OPTIONS="\
     --with-stream \
     --with-stream_ssl_module \
     --with-threads \
-    --add-module=/usr/local/src/nginx-module-vts-0.2.2 \
+    --add-module=/usr/local/src/nginx-module-vts-0.2.3 \
     --add-module=/usr/local/src/ngx_waf-10.1.2 \
     "
 ARG RESTY_CONFIG_OPTIONS_MORE=""
@@ -90,7 +90,7 @@ LABEL resty_eval_post_make="${RESTY_EVAL_POST_MAKE}"
 LABEL resty_luajit_options="${RESTY_LUAJIT_OPTIONS}"
 LABEL resty_pcre_options="${RESTY_PCRE_OPTIONS}"
 
-COPY nginx-module-vts-0.2.2 /usr/local/src/nginx-module-vts-0.2.2
+COPY nginx-module-vts-0.2.3 /usr/local/src/nginx-module-vts-0.2.3
 COPY ngx_waf-10.1.2 /usr/local/src/ngx_waf-10.1.2
 
 RUN apt-get update \

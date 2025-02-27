@@ -1,15 +1,13 @@
 #!/bin/bash
 
-if [ ! -f nginx-module-vts-0.2.2.zip ]; then
-    wget https://github.com/ttdockerfile/openresty-monitor-ubuntu/releases/download/vts-0.2.2/nginx-module-vts-0.2.2.zip
+# 下载 nginx-module-vts
+if [ ! -f nginx-module-vts-0.2.3.zip ]; then
+    wget -O nginx-module-vts-0.2.3.zip https://github.com/vozlt/nginx-module-vts/archive/refs/tags/v0.2.3.zip
 fi
-
+# 下载 ngx_waf
 if [ ! -f ngx_waf-v10.1.2.zip ]; then
-    wget https://github.com/ADD-SP/ngx_waf/archive/refs/tags/v10.1.2.zip
-    mv v10.1.2.zip ngx_waf-v10.1.2.zip
+    wget -O ngx_waf-v10.1.2.zip https://github.com/ADD-SP/ngx_waf/archive/refs/tags/v10.1.2.zip
 fi
-
-
-rm -rf nginx-module-vts-0.2.2 && unzip nginx-module-vts-0.2.2.zip
-
-rm -rf ngx_waf-10.1.2 && unzip ngx_waf-v10.1.2.zip
+# 解压模块并删除压缩包
+rm -rf nginx-module-vts-0.2.3 && unzip nginx-module-vts-0.2.3.zip
+rm -rf ngx_waf-v10.1.2 && unzip ngx_waf-v10.1.2.zip
