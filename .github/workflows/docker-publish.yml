@@ -15,7 +15,7 @@ on:
 
 env:
   IMAGE_NAME: "buyfakett/openresty"
-  IMAGE_TAG: "ubuntu_focal-vts_0.2.2-ngx_waf_10.1.2"
+  IMAGE_TAG: "ubuntu_focal-vts_0.2.3-ngx_waf_10.1.2"
 
 jobs:
   docker:
