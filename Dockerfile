@@ -71,7 +71,7 @@ ARG RESTY_CONFIG_OPTIONS="\
     --with-stream_ssl_module \
     --with-stream_ssl_preread_module \
     --with-threads \
-    --add-module=/usr/local/src/nginx-module-vts-0.2.3 \
+    --add-module=/usr/local/src/nginx-module-vts-0.2.4 \
     --add-module=/usr/local/src/ngx_waf-10.1.2 \
     "
 ARG RESTY_CONFIG_OPTIONS_MORE=""
@@ -112,9 +112,6 @@ LABEL resty_eval_post_make="${RESTY_EVAL_POST_MAKE}"
 LABEL resty_luajit_options="${RESTY_LUAJIT_OPTIONS}"
 LABEL resty_pcre_options="${RESTY_PCRE_OPTIONS}"
 
-COPY nginx-module-vts-0.2.3 /usr/local/src/nginx-module-vts-0.2.3
-COPY ngx_waf-10.1.2 /usr/local/src/ngx_waf-10.1.2
-
 ENV LIB_UTHASH=/usr/local/src/uthash
 
 RUN DEBIAN_FRONTEND=noninteractive apt-get update \
@@ -149,6 +146,10 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get update \
         wget \
         gnupg2 \
         ca-certificates \
+    && wget -O /tmp/nginx-module-vts-0.2.4.zip https://github.com/vozlt/nginx-module-vts/archive/refs/tags/v0.2.4.zip \
+    && wget -O /tmp/ngx_waf-v10.1.2.zip https://github.com/ADD-SP/ngx_waf/archive/refs/tags/v10.1.2.zip \
+    && unzip /tmp/nginx-module-vts-0.2.4.zip -d /usr/local/src/ \
+    && unzip /tmp/ngx_waf-v10.1.2.zip -d /usr/local/src/ \
     && wget -O - https://openresty.org/package/pubkey.gpg | apt-key add - \
     && echo "deb http://openresty.org/package/ubuntu focal main" | tee /etc/apt/sources.list.d/openresty.list \
     && apt-get update \
