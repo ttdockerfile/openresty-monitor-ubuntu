@@ -78,8 +78,19 @@ ARG RESTY_CONFIG_OPTIONS_MORE=""
 ARG RESTY_LUAJIT_OPTIONS="--with-luajit-xcflags='-DLUAJIT_NUMMODE=2 -DLUAJIT_ENABLE_LUA52COMPAT'"
 ARG RESTY_PCRE_OPTIONS="--with-pcre-jit"
 
-ARG RESTY_ADD_PACKAGE_BUILDDEPS=""
-ARG RESTY_ADD_PACKAGE_RUNDEPS=""
+ARG RESTY_ADD_PACKAGE_BUILDDEPS="git \
+autoconf \
+automake \
+libtool \
+python3 \
+libsodium-dev \
+libmodsecurity-dev \
+libcurl4-openssl-dev \
+wget \
+gnupg2 \
+ca-certificates"
+ARG RESTY_ADD_PACKAGE_RUNDEPS="libmodsecurity3 \
+libsodium23"
 ARG RESTY_EVAL_PRE_CONFIGURE=""
 ARG RESTY_EVAL_POST_DOWNLOAD_PRE_CONFIGURE=""
 ARG RESTY_EVAL_POST_MAKE=""
@@ -131,21 +142,8 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get update \
         unzip \
         wget \
         zlib1g-dev \
-        git \
-        autoconf \
-        automake \
-        libtool \
-        python3 \
-        libsodium-dev \
-        libsodium23 \ 
-        libmodsecurity3 \
-        libmodsecurity-dev \
-        libcurl4-openssl-dev \
         ${RESTY_ADD_PACKAGE_BUILDDEPS} \
         ${RESTY_ADD_PACKAGE_RUNDEPS} \
-        wget \
-        gnupg2 \
-        ca-certificates \
     && wget -O /tmp/nginx-module-vts-0.2.4.zip https://github.com/vozlt/nginx-module-vts/archive/refs/tags/v0.2.4.zip \
     && wget -O /tmp/ngx_waf-v10.1.2.zip https://github.com/ADD-SP/ngx_waf/archive/refs/tags/v10.1.2.zip \
     && unzip /tmp/nginx-module-vts-0.2.4.zip -d /usr/local/src/ \
