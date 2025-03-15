@@ -231,6 +231,12 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get update \
     && rm -rf /tmp/* \
     && rm -rf /var/lib/apt/lists/* \
     && rm -rf /var/log/* \
+    && rm -rf /usr/share/doc/* \
+    && rm -rf /var/cache/* \
+    && rm -rf /var/lib/apt/lists/* \
+    && rm -rf /var/tmp/* \
+    && rm -rf /usr/local/src/* \
+    && rm -rf /root/.opm/cache/* \
     && apt-get clean \
     && find / -type d -name ".git" -exec rm -rf {} +
 
