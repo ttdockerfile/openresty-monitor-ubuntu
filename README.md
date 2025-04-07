@@ -1,4 +1,6 @@
-本仓库把[vts-0.2.3](https://github.com/vozlt/nginx-module-vts)和`nginx-lua-prometheus`和[ngx_waf](https://github.com/ADD-SP/ngx_waf)打进`openresty`镜像中
+本仓库把[vts](https://github.com/vozlt/nginx-module-vts)和[nginx-lua-prometheus](https://github.com/knyar/nginx-lua-prometheus)和[ngx_waf](https://github.com/ADD-SP/ngx_waf)打进`openresty`镜像中
+
+基于[docker-openresty](https://github.com/openresty/docker-openresty/blob/master/focal/Dockerfile)构建
 
 ## 使用方法：
 
