@@ -73,6 +73,7 @@ ARG RESTY_CONFIG_OPTIONS="\
     --with-threads \
     --add-module=/usr/local/src/nginx-module-vts-0.2.4 \
     --add-module=/usr/local/src/ngx_waf-10.1.2 \
+    --add-module=/usr/local/src/ngx_torii \
     "
 ARG RESTY_CONFIG_OPTIONS_MORE=""
 ARG RESTY_LUAJIT_OPTIONS="--with-luajit-xcflags='-DLUAJIT_NUMMODE=2 -DLUAJIT_ENABLE_LUA52COMPAT'"
@@ -150,6 +151,7 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get update \
     && wget -O /tmp/ngx_waf-v10.1.2.zip https://github.com/ADD-SP/ngx_waf/archive/refs/tags/v10.1.2.zip \
     && unzip /tmp/nginx-module-vts-0.2.4.zip -d /usr/local/src/ \
     && unzip /tmp/ngx_waf-v10.1.2.zip -d /usr/local/src/ \
+    && git clone https://github.com/Rayzggz/ngx_torii.git /usr/local/src/ngx_torii \
     && wget -O - https://openresty.org/package/pubkey.gpg | apt-key add - \
     && echo "deb http://openresty.org/package/ubuntu focal main" | tee /etc/apt/sources.list.d/openresty.list \
     && apt-get update \
