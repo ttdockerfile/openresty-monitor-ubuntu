@@ -15,8 +15,8 @@ ARG RESTY_VERSION="1.27.1.2"
 ARG RESTY_LUAROCKS_VERSION="3.12.2"
 
 # https://github.com/openresty/openresty-packaging/blob/master/deb/openresty-openssl3/debian/rules
-ARG RESTY_OPENSSL_VERSION="3.4.3"
-ARG RESTY_OPENSSL_PATCH_VERSION="3.4.1"
+ARG RESTY_OPENSSL_VERSION="3.5.5"
+ARG RESTY_OPENSSL_PATCH_VERSION="3.5.5"
 ARG RESTY_OPENSSL_URL_BASE="https://github.com/openssl/openssl/releases/download/openssl-${RESTY_OPENSSL_VERSION}"
 # LEGACY:  "https://www.openssl.org/source/old/1.1.1"
 ARG RESTY_OPENSSL_BUILD_OPTIONS="enable-camellia enable-seed enable-rfc3779 enable-cms enable-md2 enable-rc5 \
@@ -71,8 +71,8 @@ ARG RESTY_CONFIG_OPTIONS="\
     --with-stream_ssl_module \
     --with-stream_ssl_preread_module \
     --with-threads \
-    --add-module=/usr/local/src/nginx-module-vts-0.2.4 \
-    --add-module=/usr/local/src/ngx_waf-10.1.2 \
+    --add-module=/usr/local/src/nginx-module-vts \
+    --add-module=/usr/local/src/ngx_waf \
     --add-module=/usr/local/src/ngx_torii \
     "
 ARG RESTY_CONFIG_OPTIONS_MORE=""
@@ -147,10 +147,12 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get update \
         zlib1g-dev \
         ${RESTY_ADD_PACKAGE_BUILDDEPS} \
         ${RESTY_ADD_PACKAGE_RUNDEPS} \
-    && wget -O /tmp/nginx-module-vts-0.2.4.zip https://github.com/vozlt/nginx-module-vts/archive/refs/tags/v0.2.4.zip \
+    && wget -O /tmp/nginx-module-vts-0.2.5.zip https://github.com/vozlt/nginx-module-vts/archive/refs/tags/v0.2.5.zip \
     && wget -O /tmp/ngx_waf-v10.1.2.zip https://github.com/ADD-SP/ngx_waf/archive/refs/tags/v10.1.2.zip \
-    && unzip /tmp/nginx-module-vts-0.2.4.zip -d /usr/local/src/ \
+    && unzip /tmp/nginx-module-vts-0.2.5.zip -d /usr/local/src/ \
     && unzip /tmp/ngx_waf-v10.1.2.zip -d /usr/local/src/ \
+    && mv /usr/local/src/nginx-module-vts-0.2.5 /usr/local/src/nginx-module-vts \
+    && mv /usr/local/src/ngx_waf-10.1.2 /usr/local/src/ngx_waf \
     && git clone https://github.com/Rayzggz/ngx_torii.git /usr/local/src/ngx_torii \
     && wget -O - https://openresty.org/package/pubkey.gpg | apt-key add - \
     && echo "deb http://openresty.org/package/ubuntu focal main" | tee /etc/apt/sources.list.d/openresty.list \
