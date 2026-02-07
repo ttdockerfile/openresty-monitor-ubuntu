@@ -159,7 +159,7 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get update \
     && apt-get update \
     && yes | apt-get install -y --no-install-recommends openresty-opm \
     && opm get knyar/nginx-lua-prometheus=0.20240525 \
-    && cd /usr/local/src/ngx_waf-10.1.2 \
+    && cd /usr/local/src/ngx_waf \
     && git clone -b v1.7.15 https://github.com/DaveGamble/cJSON.git lib/cjson \
     && git clone -b v2.3.0 https://github.com/troydhanson/uthash.git lib/uthash \
     && cd /usr/local/src \
