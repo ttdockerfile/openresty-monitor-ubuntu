@@ -1,8 +1,8 @@
-# Dockerfile - Ubuntu Focal
+# Dockerfile - Ubuntu Jammy
 # https://github.com/openresty/docker-openresty
 
 ARG RESTY_IMAGE_BASE="ubuntu"
-ARG RESTY_IMAGE_TAG="focal"
+ARG RESTY_IMAGE_TAG="jammy"
 
 FROM ${RESTY_IMAGE_BASE}:${RESTY_IMAGE_TAG}
 
@@ -10,7 +10,7 @@ LABEL maintainer="Evan Wies <evan@neomantra.net>"
 
 # Docker Build Arguments
 ARG RESTY_IMAGE_BASE="ubuntu"
-ARG RESTY_IMAGE_TAG="focal"
+ARG RESTY_IMAGE_TAG="jammy"
 ARG RESTY_VERSION="1.29.2.1"
 ARG RESTY_LUAROCKS_VERSION="3.13.0"
 
@@ -32,7 +32,7 @@ ARG RESTY_PCRE_BUILD_OPTIONS="--enable-jit --enable-pcre2grep-jit --disable-bsr-
     --enable-percent-zt --disable-rebuild-chartables --enable-shared --disable-static --disable-silent-rules --enable-unicode --disable-valgrind \
     "
 
-ARG RESTY_J="4"
+ARG RESTY_J="1"
 
 # https://github.com/openresty/openresty-packaging/blob/master/deb/openresty/debian/rules
 ARG RESTY_CONFIG_OPTIONS="\
@@ -156,9 +156,6 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get update \
     && git clone https://github.com/Rayzggz/ngx_torii.git /usr/local/src/ngx_torii \
     && wget -O - https://openresty.org/package/pubkey.gpg | apt-key add - \
     && echo "deb http://openresty.org/package/ubuntu focal main" | tee /etc/apt/sources.list.d/openresty.list \
-    && apt-get update \
-    && yes | apt-get install -y --no-install-recommends openresty-opm \
-    && opm get knyar/nginx-lua-prometheus=0.20240525 \
     && cd /usr/local/src/ngx_waf \
     && git clone -b v1.7.15 https://github.com/DaveGamble/cJSON.git lib/cjson \
     && git clone -b v2.3.0 https://github.com/troydhanson/uthash.git lib/uthash \
@@ -225,6 +222,7 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get update \
         --with-lua-include=/usr/local/openresty/luajit/include/luajit-2.1 \
     && make build \
     && make install \
+    && /usr/local/openresty/luajit/bin/luarocks install nginx-lua-prometheus \
     && cd /tmp \
     && if [ -n "${RESTY_EVAL_POST_MAKE}" ]; then eval $(echo ${RESTY_EVAL_POST_MAKE}); fi \
     && rm -rf luarocks-${RESTY_LUAROCKS_VERSION} luarocks-${RESTY_LUAROCKS_VERSION}.tar.gz \
