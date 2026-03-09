@@ -156,9 +156,6 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get update \
     && git clone https://github.com/Rayzggz/ngx_torii.git /usr/local/src/ngx_torii \
     && wget -O - https://openresty.org/package/pubkey.gpg | apt-key add - \
     && echo "deb http://openresty.org/package/ubuntu focal main" | tee /etc/apt/sources.list.d/openresty.list \
-    && apt-get update \
-    && yes | apt-get install -y --no-install-recommends openresty-opm \
-    && opm get knyar/nginx-lua-prometheus=0.20240525 \
     && cd /usr/local/src/ngx_waf \
     && git clone -b v1.7.15 https://github.com/DaveGamble/cJSON.git lib/cjson \
     && git clone -b v2.3.0 https://github.com/troydhanson/uthash.git lib/uthash \
@@ -225,6 +222,7 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get update \
         --with-lua-include=/usr/local/openresty/luajit/include/luajit-2.1 \
     && make build \
     && make install \
+    && /usr/local/openresty/luajit/bin/luarocks install nginx-lua-prometheus \
     && cd /tmp \
     && if [ -n "${RESTY_EVAL_POST_MAKE}" ]; then eval $(echo ${RESTY_EVAL_POST_MAKE}); fi \
     && rm -rf luarocks-${RESTY_LUAROCKS_VERSION} luarocks-${RESTY_LUAROCKS_VERSION}.tar.gz \
