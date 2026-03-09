@@ -32,7 +32,7 @@ ARG RESTY_PCRE_BUILD_OPTIONS="--enable-jit --enable-pcre2grep-jit --disable-bsr-
     --enable-percent-zt --disable-rebuild-chartables --enable-shared --disable-static --disable-silent-rules --enable-unicode --disable-valgrind \
     "
 
-ARG RESTY_J="4"
+ARG RESTY_J="1"
 
 # https://github.com/openresty/openresty-packaging/blob/master/deb/openresty/debian/rules
 ARG RESTY_CONFIG_OPTIONS="\
