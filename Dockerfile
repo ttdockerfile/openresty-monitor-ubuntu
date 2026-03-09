@@ -1,8 +1,8 @@
-# Dockerfile - Ubuntu Focal
+# Dockerfile - Ubuntu Jammy
 # https://github.com/openresty/docker-openresty
 
 ARG RESTY_IMAGE_BASE="ubuntu"
-ARG RESTY_IMAGE_TAG="focal"
+ARG RESTY_IMAGE_TAG="jammy"
 
 FROM ${RESTY_IMAGE_BASE}:${RESTY_IMAGE_TAG}
 
@@ -10,7 +10,7 @@ LABEL maintainer="Evan Wies <evan@neomantra.net>"
 
 # Docker Build Arguments
 ARG RESTY_IMAGE_BASE="ubuntu"
-ARG RESTY_IMAGE_TAG="focal"
+ARG RESTY_IMAGE_TAG="jammy"
 ARG RESTY_VERSION="1.29.2.1"
 ARG RESTY_LUAROCKS_VERSION="3.13.0"
 
