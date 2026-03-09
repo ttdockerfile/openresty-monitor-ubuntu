@@ -11,8 +11,8 @@ LABEL maintainer="Evan Wies <evan@neomantra.net>"
 # Docker Build Arguments
 ARG RESTY_IMAGE_BASE="ubuntu"
 ARG RESTY_IMAGE_TAG="focal"
-ARG RESTY_VERSION="1.27.1.2"
-ARG RESTY_LUAROCKS_VERSION="3.12.2"
+ARG RESTY_VERSION="1.29.2.1"
+ARG RESTY_LUAROCKS_VERSION="3.13.0"
 
 # https://github.com/openresty/openresty-packaging/blob/master/deb/openresty-openssl3/debian/rules
 ARG RESTY_OPENSSL_VERSION="3.5.5"
@@ -24,15 +24,15 @@ ARG RESTY_OPENSSL_BUILD_OPTIONS="enable-camellia enable-seed enable-rfc3779 enab
         "
 
 # https://github.com/openresty/openresty-packaging/blob/master/deb/openresty-pcre2/debian/rules
-ARG RESTY_PCRE_VERSION="10.44"
-ARG RESTY_PCRE_SHA256="86b9cb0aa3bcb7994faa88018292bc704cdbb708e785f7c74352ff6ea7d3175b"
+ARG RESTY_PCRE_VERSION="10.47"
+ARG RESTY_PCRE_SHA256="c08ae2388ef333e8403e670ad70c0a11f1eed021fd88308d7e02f596fcd9dc16"
 ARG RESTY_PCRE_BUILD_OPTIONS="--enable-jit --enable-pcre2grep-jit --disable-bsr-anycrlf --disable-coverage --disable-ebcdic --disable-fuzz-support \
     --disable-jit-sealloc --disable-never-backslash-C --enable-newline-is-lf --enable-pcre2-8 --enable-pcre2-16 --enable-pcre2-32 \
     --enable-pcre2grep-callout --enable-pcre2grep-callout-fork --disable-pcre2grep-libbz2 --disable-pcre2grep-libz --disable-pcre2test-libedit \
     --enable-percent-zt --disable-rebuild-chartables --enable-shared --disable-static --disable-silent-rules --enable-unicode --disable-valgrind \
     "
 
-ARG RESTY_J="1"
+ARG RESTY_J="4"
 
 # https://github.com/openresty/openresty-packaging/blob/master/deb/openresty/debian/rules
 ARG RESTY_CONFIG_OPTIONS="\
