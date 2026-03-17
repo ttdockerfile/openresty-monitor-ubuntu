@@ -231,6 +231,7 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get update \
     && mkdir -p /var/run/openresty \
     && ln -sf /dev/stdout /usr/local/openresty/nginx/logs/access.log \
     && ln -sf /dev/stderr /usr/local/openresty/nginx/logs/error.log \
+    && echo '<!DOCTYPE html><html><head><title>Welcome to nginx!</title></head><body style="width: 35em; margin: 0 auto;"><h1>Welcome to nginx!</h1></body></html>' > /usr/local/openresty/nginx/html/index.html \
     && rm -rf /tmp/* \
     && rm -rf /var/lib/apt/lists/* \
     && rm -rf /var/log/* \
