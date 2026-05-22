@@ -154,7 +154,8 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get update \
     && mv /usr/local/src/nginx-module-vts-0.2.5 /usr/local/src/nginx-module-vts \
     && mv /usr/local/src/ngx_waf-10.1.2 /usr/local/src/ngx_waf \
     && git clone https://github.com/Rayzggz/ngx_torii.git /usr/local/src/ngx_torii \
-    && wget -O - https://openresty.org/package/pubkey.gpg | apt-key add - \
+    && wget -O /etc/apt/keyrings/openresty.gpg https://openresty.org/package/pubkey.gpg \
+    && echo "deb [arch=amd64 signed-by=/etc/apt/keyrings/openresty.gpg] http://openresty.org/package/ubuntu $(. /etc/os-release && echo $UBUNTU_CODENAME) main" | tee /etc/apt/sources.list.d/openresty.list \
     && echo "deb http://openresty.org/package/ubuntu focal main" | tee /etc/apt/sources.list.d/openresty.list \
     && cd /usr/local/src/ngx_waf \
     && git clone -b v1.7.15 https://github.com/DaveGamble/cJSON.git lib/cjson \
