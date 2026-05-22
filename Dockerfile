@@ -1,8 +1,8 @@
-# Dockerfile - Ubuntu Jammy
+# Dockerfile - Ubuntu Resolute Raccoon
 # https://github.com/openresty/docker-openresty
 
 ARG RESTY_IMAGE_BASE="ubuntu"
-ARG RESTY_IMAGE_TAG="jammy"
+ARG RESTY_IMAGE_TAG="resolute"
 
 FROM ${RESTY_IMAGE_BASE}:${RESTY_IMAGE_TAG}
 
@@ -10,7 +10,7 @@ LABEL maintainer="Evan Wies <evan@neomantra.net>"
 
 # Docker Build Arguments
 ARG RESTY_IMAGE_BASE="ubuntu"
-ARG RESTY_IMAGE_TAG="jammy"
+ARG RESTY_IMAGE_TAG="resolute"
 ARG RESTY_VERSION="1.29.2.4"
 ARG RESTY_LUAROCKS_VERSION="3.13.0"
 
@@ -154,7 +154,8 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get update \
     && mv /usr/local/src/nginx-module-vts-0.2.5 /usr/local/src/nginx-module-vts \
     && mv /usr/local/src/ngx_waf-10.1.2 /usr/local/src/ngx_waf \
     && git clone https://github.com/Rayzggz/ngx_torii.git /usr/local/src/ngx_torii \
-    && wget -O - https://openresty.org/package/pubkey.gpg | apt-key add - \
+    && wget -O /etc/apt/keyrings/openresty.gpg https://openresty.org/package/pubkey.gpg \
+    && echo "deb [arch=amd64 signed-by=/etc/apt/keyrings/openresty.gpg] http://openresty.org/package/ubuntu $(. /etc/os-release && echo $UBUNTU_CODENAME) main" | tee /etc/apt/sources.list.d/openresty.list \
     && echo "deb http://openresty.org/package/ubuntu focal main" | tee /etc/apt/sources.list.d/openresty.list \
     && cd /usr/local/src/ngx_waf \
     && git clone -b v1.7.15 https://github.com/DaveGamble/cJSON.git lib/cjson \
@@ -177,7 +178,7 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get update \
     fi \
     && if [ $(echo ${RESTY_OPENSSL_VERSION} | cut -c 1-5) = "1.1.0" ] ; then \
         echo 'patching OpenSSL 1.1.0 for OpenResty' \
-        && curl -s https://raw.githubusercontent.com/openresty/openresty/ed328977028c3ec3033bc25873ee360056e247cd/patches/openssl-1.1.0j-parallel_build_fix.patch | patch -p1 \
+        && curl -s https://raw.githubusercontent.com/openresty/openresty/master/patches/openssl-1.1.0j-parallel_build_fix.patch | patch -p1 \
         && curl -s https://raw.githubusercontent.com/openresty/openresty/master/patches/openssl-${RESTY_OPENSSL_PATCH_VERSION}-sess_set_get_cb_yield.patch | patch -p1 ; \
     fi \
     && ./config \
