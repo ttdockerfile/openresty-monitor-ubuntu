@@ -147,11 +147,11 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get update \
         zlib1g-dev \
         ${RESTY_ADD_PACKAGE_BUILDDEPS} \
         ${RESTY_ADD_PACKAGE_RUNDEPS} \
-    && wget -O /tmp/nginx-module-vts-0.2.6.zip https://github.com/vozlt/nginx-module-vts/archive/refs/tags/v0.2.6.zip \
+    && wget -O /tmp/nginx-module-vts-0.2.7.zip https://github.com/vozlt/nginx-module-vts/archive/refs/tags/v0.2.7.zip \
     && wget -O /tmp/ngx_waf-v10.1.2.zip https://github.com/ADD-SP/ngx_waf/archive/refs/tags/v10.1.2.zip \
-    && unzip /tmp/nginx-module-vts-0.2.6.zip -d /usr/local/src/ \
+    && unzip /tmp/nginx-module-vts-0.2.7.zip -d /usr/local/src/ \
     && unzip /tmp/ngx_waf-v10.1.2.zip -d /usr/local/src/ \
-    && mv /usr/local/src/nginx-module-vts-0.2.6 /usr/local/src/nginx-module-vts \
+    && mv /usr/local/src/nginx-module-vts-0.2.7 /usr/local/src/nginx-module-vts \
     && mv /usr/local/src/ngx_waf-10.1.2 /usr/local/src/ngx_waf \
     && git clone https://github.com/Rayzggz/ngx_torii.git /usr/local/src/ngx_torii \
     && wget -O /etc/apt/keyrings/openresty.gpg https://openresty.org/package/pubkey.gpg \
