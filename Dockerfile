@@ -73,7 +73,6 @@ ARG RESTY_CONFIG_OPTIONS="\
     --with-threads \
     --add-module=/usr/local/src/nginx-module-vts \
     --add-module=/usr/local/src/ngx_waf \
-    --add-module=/usr/local/src/ngx_torii \
     "
 ARG RESTY_CONFIG_OPTIONS_MORE=""
 ARG RESTY_LUAJIT_OPTIONS="--with-luajit-xcflags='-DLUAJIT_NUMMODE=2 -DLUAJIT_ENABLE_LUA52COMPAT'"
@@ -153,10 +152,9 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get update \
     && unzip /tmp/ngx_waf-v10.1.2.zip -d /usr/local/src/ \
     && mv /usr/local/src/nginx-module-vts-0.2.7 /usr/local/src/nginx-module-vts \
     && mv /usr/local/src/ngx_waf-10.1.2 /usr/local/src/ngx_waf \
-    && git clone https://github.com/Rayzggz/ngx_torii.git /usr/local/src/ngx_torii \
     && wget -O /etc/apt/keyrings/openresty.gpg https://openresty.org/package/pubkey.gpg \
     && echo "deb [arch=amd64 signed-by=/etc/apt/keyrings/openresty.gpg] http://openresty.org/package/ubuntu $(. /etc/os-release && echo $UBUNTU_CODENAME) main" | tee /etc/apt/sources.list.d/openresty.list \
-    && echo "deb http://openresty.org/package/ubuntu focal main" | tee /etc/apt/sources.list.d/openresty.list \
+    && echo "deb http://openresty.org/package/ubuntu ${RESTY_IMAGE_TAG} main" | tee /etc/apt/sources.list.d/openresty.list \
     && cd /usr/local/src/ngx_waf \
     && git clone -b v1.7.15 https://github.com/DaveGamble/cJSON.git lib/cjson \
     && git clone -b v2.3.0 https://github.com/troydhanson/uthash.git lib/uthash \
