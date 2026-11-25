@@ -12,6 +12,7 @@ LABEL maintainer="Evan Wies <evan@neomantra.net>"
 ARG RESTY_IMAGE_BASE="ubuntu"
 ARG RESTY_IMAGE_TAG="resolute"
 ARG RESTY_VERSION="1.31.9.1"
+ARG NGINX_ACME_VERSION="v0.4.2"
 ARG RESTY_LUAROCKS_VERSION="3.13.0"
 
 # https://github.com/openresty/openresty-packaging/blob/master/deb/openresty-openssl3/debian/rules
@@ -73,12 +74,17 @@ ARG RESTY_CONFIG_OPTIONS="\
     --with-threads \
     --add-module=/usr/local/src/nginx-module-vts \
     --add-module=/usr/local/src/ngx_waf \
+    --add-module=/usr/local/src/nginx-acme \
     "
 ARG RESTY_CONFIG_OPTIONS_MORE=""
 ARG RESTY_LUAJIT_OPTIONS="--with-luajit-xcflags='-DLUAJIT_NUMMODE=2 -DLUAJIT_ENABLE_LUA52COMPAT'"
 ARG RESTY_PCRE_OPTIONS="--with-pcre-jit"
 
 ARG RESTY_ADD_PACKAGE_BUILDDEPS="git \
+rustc \
+cargo \
+pkg-config \
+libclang-dev \
 autoconf \
 automake \
 libtool \
@@ -87,8 +93,7 @@ libsodium-dev \
 libmodsecurity-dev \
 libcurl4-openssl-dev \
 wget \
-gnupg2 \
-ca-certificates"
+gnupg2"
 ARG RESTY_ADD_PACKAGE_RUNDEPS="libmodsecurity3 \
 libsodium23"
 ARG RESTY_EVAL_PRE_CONFIGURE=""
@@ -203,6 +208,8 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get update \
     && tar xzf openresty-${RESTY_VERSION}.tar.gz \
     && cd /tmp/openresty-${RESTY_VERSION} \
     && if [ -n "${RESTY_EVAL_POST_DOWNLOAD_PRE_CONFIGURE}" ]; then eval $(echo ${RESTY_EVAL_POST_DOWNLOAD_PRE_CONFIGURE}); fi \
+    && git clone --depth 1 --branch "${NGINX_ACME_VERSION}" https://github.com/nginx/nginx-acme.git /usr/local/src/nginx-acme \
+    && export OPENSSL_DIR=/usr/local/openresty/openssl3 OPENSSL_STATIC=0 \
     && eval ./configure -j${RESTY_J} ${_RESTY_CONFIG_DEPS} ${RESTY_CONFIG_OPTIONS} ${RESTY_CONFIG_OPTIONS_MORE} ${RESTY_LUAJIT_OPTIONS} ${RESTY_PCRE_OPTIONS} \
     && if [ -n "${RESTY_EVAL_PRE_MAKE}" ]; then eval $(echo ${RESTY_EVAL_PRE_MAKE}); fi \
     && make -j${RESTY_J} \

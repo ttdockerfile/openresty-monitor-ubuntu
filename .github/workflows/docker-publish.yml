@@ -14,7 +14,7 @@ concurrency:
 
 env:
   IMAGE_NAME: "buyfakett/openresty"
-  IMAGE_TAG: "1.31.9.1-vts_0.2.7-ngx_waf_10.1.2"
+  IMAGE_TAG: "1.31.9.1-vts_0.2.7-ngx_waf_10.1.2-acme_0.4.2"
 
 jobs:
   build-amd64:
